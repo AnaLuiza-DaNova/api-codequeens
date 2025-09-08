@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
     res.json({ mensagem: 'API de pessoas funcionando' });
 });
 
+//Endpoin
 app.get('/pessoas', (req, res) => {
     res.json(pessoas)
 })
@@ -48,7 +49,38 @@ app.get("/pessoa/:id", (req, res) => {
 
 })
 
-const PORT = 3000;
+//endpoint 05 do tipo PUT/PATCH  = 'http://localhost:3000/1'
+app.put('/pessoas/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    console.log ("ID: ", id)
+
+    const pessoa = pessoas.find(p => p.id === id);
+    console.log ("pessoa: ", pessoa)
+
+    if (!pessoa) {
+        return res.status(404).json({ error: 'Usuário não encontrado' });
+    }
+   
+    const novaPessoa = req.body;
+    console.log ("Antiga pessoa: ", pessoa)
+    console.log ("Nova pessoa: ", novaPessoa)
+    
+    pessoa.nome = novaPessoa.nome
+    pessoa.idade = novaPessoa.idade
+    pessoa.altura = novaPessoa.altura
+    pessoas[pessoa.id - 1] = pessoa
+
+    console.log("Pessoas: ", pessoas)
+    res.json(pessoas);
+})
+
+//Endpoint 06 do tipo DELETE
+app.delete ('/deletarpessoas/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const pessoa = pessoas.find(p => p.id === id);
+})
+
+const PORT = 3000;  
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
