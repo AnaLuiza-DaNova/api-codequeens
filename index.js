@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 
 // criar um array chamado "pessoas"
-
+//banco de dados local
 let pessoas = [
     { id: 1, nome: 'Lara', idade: 14, altura: 155 },
     { id: 2, nome: 'Ana Luíza', idade: 13, altura: 163 },
@@ -13,11 +13,19 @@ let pessoas = [
     { id: 5, nome: 'Valentina', idade: 13, altura: 165 }
 ]
 
+//API do tipo GET rota = 'http://localhost:3000/'
 app.get('/', (req, res) => {
+
+    if(pessoas.length === 0){
+        res.status(404).json({status: 404, 
+            error: "NOT FOUND", 
+            message: 'Informações não encontradas.'
+        });
+    }
     res.json({ mensagem: 'API de pessoas funcionando' });
 });
 
-//Endpoin
+//Endpoint
 app.get('/pessoas', (req, res) => {
     res.json(pessoas)
 })
@@ -75,9 +83,16 @@ app.put('/pessoas/:id', (req, res) => {
 })
 
 //Endpoint 06 do tipo DELETE
-app.delete ('/deletarpessoas/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-    const pessoa = pessoas.find(p => p.id === id);
+//app.delete ('/deletarpessoas/:id', (req, res) => {
+    //const id = parseInt(req.params.id);
+    //const pessoa = pessoas.find(p => p.id === id);
+//})
+
+app.get('/totalPessoas', (req, res) => {
+    console.log ("Requisição: ", req)
+    console.log ("\n\nResponse: ", res)
+
+    res.json(pessoas.length)
 })
 
 const PORT = 3000;  
